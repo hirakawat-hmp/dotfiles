@@ -1,0 +1,3 @@
+[submodule "life"]
+	path = life
+	url = https://github.com/hirakawat-hmp/life.git

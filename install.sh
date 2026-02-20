@@ -43,23 +43,22 @@ ok "Claude Code commands linked"
 ln -sf "$DOTFILES/claude/settings.json" ~/.claude/settings.json
 ok "Claude Code settings linked"
 
-# --- Phase 4: life repo (optional) ---
-if [ ! -d ~/life ]; then
+# --- Phase 4: life submodule ---
+info "Initializing life submodule..."
+cd "$DOTFILES"
+git submodule update --init --recursive
+ok "life submodule initialized"
+
+# --- Phase 5: life plugin registration ---
+if command -v claude &>/dev/null; then
+  info "Registering life-manager plugin..."
+  echo "Run the following in Claude Code to register the plugin:"
+  echo "  claude plugin marketplace add $DOTFILES/life"
+  echo "  claude plugin install life-manager@life-marketplace"
   echo ""
-  read -p "Clone hirakawat-hmp/life repo? [y/N] " yn
-  if [[ "$yn" =~ ^[Yy]$ ]]; then
-    if ! command -v gh &>/dev/null; then
-      warn "gh CLI not found. Run 'mise install' first, then re-run this script."
-    elif ! gh auth status &>/dev/null 2>&1; then
-      info "gh auth login required"
-      gh auth login
-      gh repo clone hirakawat-hmp/life ~/life
-      ok "life repo cloned"
-    else
-      gh repo clone hirakawat-hmp/life ~/life
-      ok "life repo cloned"
-    fi
-  fi
+  echo "Requires: gh auth login + gh auth refresh -s project -h github.com"
+else
+  warn "Claude Code not found. Install it first, then register the life plugin manually."
 fi
 
 # --- Done ---

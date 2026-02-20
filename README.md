@@ -5,7 +5,7 @@ Claude Code settings + mise config. Minimal dotfiles focused on reproducibility.
 ## Setup
 
 ```bash
-git clone https://github.com/hirakawat-hmp/dotfiles.git ~/dotfiles
+git clone --recursive https://github.com/hirakawat-hmp/dotfiles.git ~/dotfiles
 cd ~/dotfiles
 ./install.sh
 mise install
@@ -35,6 +35,21 @@ mise install
 - **Dev**: uv, ruff, task, terraform, typst, marp-cli
 - **Cloud**: gcloud, firebase, cloudflared, cloud-sql-proxy
 
+### life (git submodule)
+
+`life/` is a git submodule pointing to [hirakawat-hmp/life](https://github.com/hirakawat-hmp/life).
+Claude Code plugin for life management via GitHub Issues + Projects.
+
+| Command | Purpose |
+|---------|---------|
+| `/daily-review` | Daily task review and planning |
+| `/new-issue` | Create life issue with auto-labels |
+| `/update-issue` | Update existing issue |
+| `/organize` | Reorganize issues |
+| `/weekly-review` | Weekly retrospective |
+
+Requires: `gh auth login` + `gh auth refresh -s project -h github.com`
+
 ## install.sh
 
 The script is idempotent (safe to re-run):
@@ -42,7 +57,7 @@ The script is idempotent (safe to re-run):
 1. Install mise (if not present)
 2. Symlink `mise/config.toml` to `~/.config/mise/`
 3. Symlink Claude Code config (rules, agents, commands, settings) to `~/.claude/`
-4. Optionally clone `hirakawat-hmp/life` repo
+4. Initialize life submodule and show plugin registration instructions
 
 ## Adding Config
 
