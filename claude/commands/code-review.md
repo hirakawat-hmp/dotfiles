@@ -2,7 +2,7 @@
 
 Comprehensive security and quality review of uncommitted changes:
 
-1. Get changed files: `git diff --name-only HEAD`
+1. Get changed files: `jj diff --name-only` (or `git diff --name-only HEAD` if not a jj repo)
 
 2. For each changed file, check for:
 

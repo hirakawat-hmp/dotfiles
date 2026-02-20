@@ -40,7 +40,7 @@ npx eslint . --report-unused-disable-directives
 
 ### 2. Risk Assessment
 For each item to remove:
-- Check if imported anywhere (grep search)
+- Check if imported anywhere (`rg` search)
 - Verify no dynamic imports
 - Check if part of public API
 - Review git history for context
