@@ -22,6 +22,15 @@ mise install
 | `commands/` | /plan, /code-review, /verify, /tdd, /refactor-clean |
 | `settings.json` | Plugin and MCP preferences |
 
+**Plugins** (auto-installed by `install.sh`):
+
+| Plugin | Marketplace |
+|--------|------------|
+| `frontend-design` | anthropics/claude-code |
+| `cloud-infrastructure` | wshobson/agents |
+| `ui-design` | wshobson/agents |
+| `life-manager` | life/ (local submodule) |
+
 ### mise (`~/.config/mise/`)
 
 `config.toml` defines 40+ tools. `mise install` sets up the entire CLI environment:
@@ -57,7 +66,8 @@ The script is idempotent (safe to re-run):
 1. Install mise (if not present)
 2. Symlink `mise/config.toml` to `~/.config/mise/`
 3. Symlink Claude Code config (rules, agents, commands, settings) to `~/.claude/`
-4. Initialize life submodule and show plugin registration instructions
+4. Initialize life submodule
+5. Register plugin marketplaces and install enabled plugins
 
 ## Adding Config
 

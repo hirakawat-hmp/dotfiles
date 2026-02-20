@@ -49,16 +49,46 @@ cd "$DOTFILES"
 git submodule update --init --recursive
 ok "life submodule initialized"
 
-# --- Phase 5: life plugin registration ---
+# --- Phase 5: Claude Code plugins ---
 if command -v claude &>/dev/null; then
-  info "Registering life-manager plugin..."
-  echo "Run the following in Claude Code to register the plugin:"
-  echo "  claude plugin marketplace add $DOTFILES/life"
-  echo "  claude plugin install life-manager@life-marketplace"
+  info "Registering plugin marketplaces..."
+
+  # GitHub marketplaces
+  MARKETPLACES=(
+    "anthropics/claude-plugins-official"
+    "anthropics/claude-code"
+    "wshobson/agents"
+    "affaan-m/everything-claude-code"
+    "yamadashy/repomix"
+    "ComposioHQ/awesome-claude-skills"
+    "ChromeDevTools/chrome-devtools-mcp"
+    "muratcankoylan/Agent-Skills-for-Context-Engineering"
+    "K-Dense-AI/claude-scientific-skills"
+  )
+  for repo in "${MARKETPLACES[@]}"; do
+    claude plugin marketplace add "$repo" 2>/dev/null && ok "marketplace: $repo" || warn "marketplace already registered or failed: $repo"
+  done
+
+  # Local marketplace (life submodule)
+  claude plugin marketplace add "$DOTFILES/life" 2>/dev/null && ok "marketplace: life (local)" || warn "marketplace already registered or failed: life"
+
+  info "Installing enabled plugins..."
+
+  # Plugins enabled in settings.json
+  PLUGINS=(
+    "frontend-design@claude-code-plugins"
+    "cloud-infrastructure@claude-code-workflows"
+    "ui-design@claude-code-workflows"
+    "life-manager@life-marketplace"
+  )
+  for plugin in "${PLUGINS[@]}"; do
+    claude plugin install "$plugin" 2>/dev/null && ok "plugin: $plugin" || warn "plugin already installed or failed: $plugin"
+  done
+
   echo ""
-  echo "Requires: gh auth login + gh auth refresh -s project -h github.com"
+  info "life-manager requires: gh auth login + gh auth refresh -s project -h github.com"
 else
-  warn "Claude Code not found. Install it first, then register the life plugin manually."
+  warn "Claude Code not found. Install it first, then run this script again to register plugins."
 fi
 
 # --- Done ---
