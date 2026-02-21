@@ -21,6 +21,17 @@ mise install
 | `agents/` | planner, code-reviewer, security-reviewer, tdd-guide, refactor-cleaner |
 | `commands/` | /plan, /code-review, /verify, /tdd, /refactor-clean |
 | `settings.json` | Plugin and MCP preferences |
+| `mcp-servers.json` | MCP server declarations (registered via `claude mcp add-json`) |
+
+**MCP Servers** (auto-registered by `install.sh`):
+
+| Server | Description |
+|--------|------------|
+| `serena` | Semantic code analysis (uvx) |
+| `context7` | Library documentation lookup |
+| `github` | GitHub API (requires `GITHUB_TOKEN`) |
+| `sequential-thinking` | Step-by-step reasoning |
+| `mastra` | Mastra framework docs |
 
 **Plugins** (auto-installed by `install.sh`):
 
@@ -67,7 +78,8 @@ The script is idempotent (safe to re-run):
 2. Symlink `mise/config.toml` to `~/.config/mise/`
 3. Symlink Claude Code config (rules, agents, commands, settings) to `~/.claude/`
 4. Initialize life submodule
-5. Register plugin marketplaces and install enabled plugins
+5. Register MCP servers from `claude/mcp-servers.json`
+6. Register plugin marketplaces and install enabled plugins
 
 ## Adding Config
 

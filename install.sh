@@ -49,7 +49,26 @@ cd "$DOTFILES"
 git submodule update --init --recursive
 ok "life submodule initialized"
 
-# --- Phase 5: Claude Code plugins ---
+# --- Phase 5: Claude Code MCP servers ---
+if command -v claude &>/dev/null && command -v jq &>/dev/null; then
+  info "Registering MCP servers..."
+
+  MCP_FILE="$DOTFILES/claude/mcp-servers.json"
+  for name in $(jq -r 'keys[]' "$MCP_FILE"); do
+    config=$(jq -c ".\"$name\"" "$MCP_FILE")
+    claude mcp add-json --scope user "$name" "$config" 2>/dev/null \
+      && ok "mcp: $name" \
+      || warn "mcp failed: $name"
+  done
+else
+  if ! command -v claude &>/dev/null; then
+    warn "Claude Code not found. Skipping MCP server registration."
+  elif ! command -v jq &>/dev/null; then
+    warn "jq not found. Run 'mise install' first, then re-run this script."
+  fi
+fi
+
+# --- Phase 6: Claude Code plugins ---
 if command -v claude &>/dev/null; then
   info "Registering plugin marketplaces..."
 
